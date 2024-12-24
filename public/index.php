@@ -14,9 +14,8 @@ header('Content-Type: application/json');
 
 use app\controllers\GraphQLController;
 use app\core\App;
-use app\core\Router;
 
-require_once __DIR__."./../vendor/autoload.php";
+require_once __DIR__."/../vendor/autoload.php";
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
 $dotenv->load();
@@ -28,6 +27,9 @@ try {
 }
 
 $app->router->post('/', [GraphQLController::class, 'handle']);
+$app->router->get('/', function () {
+    return "ali";
+});
 
 try { 
     $app->run();

@@ -84,12 +84,10 @@ GraphQL :
     Categories Query :
 
     query{
-        getCategories{
-            min
-            categories{
-                    name
-                __typename
-            }
+        Categories{
+            name
+            __typename
+            
         }
     }
 
