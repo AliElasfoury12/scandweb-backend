@@ -29,9 +29,9 @@ trait Create
         $values = implode(', ',$values);
 
         $sql = "INSERT INTO $tableName ( $columns ) VALUES ( $values )";
-        echo $sql;
-        DB::exec($sql);
+        //echo $sql;
+       return DB::exec($sql);
 
-        return MainModel::addPropsToClass($inputs);
+        //return MainModel::addPropsToClass($inputs);
     }
 }

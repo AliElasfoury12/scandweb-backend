@@ -1,5 +1,6 @@
 <?php
- if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: POST, GET, DELETE, PUT, PATCH, OPTIONS');
     header('Access-Control-Allow-Headers: token, Content-Type');
@@ -14,11 +15,10 @@ header('Content-Type: application/json');
 
 use app\controllers\GraphQLController;
 use app\core\App;
-use app\core\Router;
 
-require_once __DIR__."./../vendor/autoload.php";
+require_once __DIR__."/vendor/autoload.php";
 
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 try { 
@@ -28,6 +28,9 @@ try {
 }
 
 $app->router->post('/', [GraphQLController::class, 'handle']);
+$app->router->get('/', function () {
+    return "ali";
+});
 
 try { 
     $app->run();

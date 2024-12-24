@@ -65,7 +65,6 @@ class GraphQLController extends Controller {
             $categoriesType = new ObjectType([
                 'name' => 'Categories',
                 'fields' => [
-                    'min' => ['type' => Type::string()],
                     'categories' => ['type' => Type::listOf($categoryType)]
                 ]
             ]);
@@ -105,15 +104,14 @@ class GraphQLController extends Controller {
             $queryType = new ObjectType([
                 'name' => 'Query',
                 'fields' => [
-                    'getCategories' => [
+                    'categories' => [
                         'type' => $categoriesType,
                         'resolve' => static function ($r, $a, $c, ResolveInfo $resolveInfo )
                         {
                             $fields = $resolveInfo->getFieldSelection(1);
                             $fields = array_keys($fields['categories']);
-                            $min = Product::minRepeat('category');
                             $categories = Categorie::all($fields);
-                            return ['categories' => $categories, 'min' => $min];
+                            return ['categories' => $categories];
                         } 
                     ],
                     'products' => [

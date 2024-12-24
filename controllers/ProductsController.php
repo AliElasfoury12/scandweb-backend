@@ -38,6 +38,7 @@ class ProductsController extends Controller {
             $with[] = "attributes:$attributesFields";
         }
 
+
         $fields = array_keys($fields);
         if($prices){
             $products = Product::select($fields)->with($with);

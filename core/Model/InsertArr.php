@@ -39,8 +39,8 @@ trait InsertArr
 
         $sql = "INSERT INTO $tableName ( $columns ) VALUES  $result";
         //echo $sql;
-        DB::exec($sql);
+        return DB::exec($sql);
 
-        return $className::addPropsToClass($inputs);
+        //return $className::addPropsToClass($inputs);
     }
 }

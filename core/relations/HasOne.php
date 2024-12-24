@@ -50,10 +50,13 @@ class HasOne extends Relations {
             $requestedCoulmns = "$table.*";
         }
 
-        $select = App::$app->model::$query['select'];        
-        if ($table == $table1 && $select) // products
-        {
-            $requestedCoulmns = self::implodeColumns($table, $select);
+        $Query = App::$app->model::$query;
+        if(array_key_exists('select', $Query)) {
+            $select = $Query['select'];        
+            if ($table == $table1 && $select) // products
+            {
+                $requestedCoulmns = self::implodeColumns($table, $select);
+            }
         }
 
         $sql = "SELECT $requestedCoulmns FROM 

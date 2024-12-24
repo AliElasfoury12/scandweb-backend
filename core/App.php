@@ -37,8 +37,8 @@ class App  {
         $this->model = new MainModel();
         $this->migrations  = new Migrations();
         $this->command = new Command();
-        $this->router = new Router();
         $this->controller = new MainController();
+        $this->router = new Router();
 
         if($this->session->get('user')){
             $this->user = $this->session->get('user');

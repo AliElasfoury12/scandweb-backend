@@ -9,21 +9,20 @@ class Router  {
     protected  $lastPath = '';
     protected  $lastMethod = '';
 
-    public static function get($path, $callback) {
-        $router =  App::$app->router;
-        $router->lastPath = $path;
-        $router->lastMethod = 'get';
-        $router->routes['get'][$path] = $callback;
-        return  $router ; 
+    public  function get($path, $callback) {
+        
+        $this->lastPath = $path;
+        $this->lastMethod = 'get';
+        $this->routes['get'][$path] = $callback;
+        return  $this ; 
     }
 
-    public static function post($path, $callback)
+    public  function post($path, $callback)
     {
-        $router = App::$app->router;
-        $router->lastPath = $path;
-        $router->lastMethod = 'post';
-        $router->routes['post'][$path] = $callback;
-        return $router; 
+        $this->lastPath = $path;
+        $this->lastMethod = 'post';
+        $this->routes['post'][$path] = $callback;
+        return  $this; 
     }
 
     public function resolve () 
@@ -48,18 +47,23 @@ class Router  {
             $callback = [$callbackFun, $callback[1]];
         }
 
-        $middlewares = $this->middlewares[$method][$path];
-        if($middlewares) {
-            foreach ($middlewares as $middleware) {
-               call_user_func(['app\core\Middleware', $middleware]);
+        if($this->middlewares){
+            $middlewares = $this->middlewares[$method][$path];
+            if($middlewares) {
+                foreach ($middlewares as $middleware) {
+                call_user_func(['app\core\Middleware', $middleware]);
+                }
             }
         }
        
-        parse_str($_SERVER['QUERY_STRING'], $queryString);
-        $queryString = array_values($queryString);
-        $arges = [ $request];
-        foreach ($queryString as $value) {
-            $arges[] = $value;
+        $arges = [];
+        if(array_key_exists('QUERY_STRING', $_SERVER)) {
+            parse_str($_SERVER['QUERY_STRING'], $queryString);
+            $queryString = array_values($queryString);
+            $arges = [ $request];
+            foreach ($queryString as $value) {
+                $arges[] = $value;
+            }
         }
 
         return call_user_func_array ($callback, $arges);

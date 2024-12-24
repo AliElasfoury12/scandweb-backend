@@ -99,27 +99,32 @@ class Relations {
     public static function getQuery ($table1) 
     {
         $query = MainModel::$query;
-        $wheres = $query['where'];
-        $extraQuery = $query['query'];
+        $wheres = '';
+        $extraQuery = '';
 
-        if(!empty($wheres)) {
-            if(count($wheres) > 1) {
-                foreach ($wheres as &$where) {
-                    $where = "$table1.$where";
+        if(array_key_exists('where', $query)) {
+            $wheres = $query['where'];
+            if(!empty($wheres)) {
+                if(count($wheres) > 1) {
+                    foreach ($wheres as &$where) {
+                        $where = "$table1.$where";
+                    }
+                    $wheres = implode(' AND ', $wheres);
                 }
-                $wheres = implode(' AND ', $wheres);
+                $wheres = "WHERE $wheres";
+            }else {
+                $wheres = '';
             }
-            $wheres = "WHERE $wheres";
-        }else {
-            $wheres = '';
         }
-
-        if(!empty($extraQuery)) {
-            $extraQuery = implode(' ', $extraQuery);
-        }else{
-            $extraQuery = '';
+       
+        if(array_key_exists('query', $query)) {
+            $extraQuery = $query['query'];
+            if(!empty($extraQuery)) {
+                $extraQuery = implode(' ', $extraQuery);
+            }else {
+                $extraQuery = '';
+            }
         }
-
 
        return  "$wheres $extraQuery";
     }

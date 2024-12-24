@@ -52,11 +52,10 @@ class MainModel extends Relations {
         $tableName = self::getTableName($class);
         $sql = self::sql();
 
-        if(self::$query['select']) {
+        $select = '*';
+        if(array_key_exists('select', self::$query)){
             $select = implode(', ', self::$query['select']);
-        }else {
-            $select = '*';
-        }
+        }   
 
         $sql = "SELECT $select FROM $tableName $sql";
         //echo $sql;
@@ -85,21 +84,29 @@ class MainModel extends Relations {
 
     static public function sql ()  
     {
-        $where = self::$query['where'];
-        if(!empty($where)) {
-            $where = implode(' AND ', $where);
-            $where = "WHERE $where";
-        }else{
-            $where = '';
+        $where = '';
+        $query = '';
+
+        if(array_key_exists('where', self::$query)){
+            $where = self::$query['where'];
+            if(!empty($where)) {
+                $where = implode(' AND ', $where);
+                $where = "WHERE $where";
+            }else {
+                $where = '';
+            }
         }
 
-        $query = self::$query['query'];
-        if(!empty($query)) {
-            $query = implode('  ',$query);
-        }else{
-            $query = '';
+        if(array_key_exists('query', self::$query)){
+            $query = self::$query['query'];
+            if(!empty($query)) {
+                $query = implode('  ',$query);
+            }else{
+                $query ='';
+            }
         }
 
+    
         return "$where $query";
     }
 
